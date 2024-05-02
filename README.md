@@ -7,3 +7,6 @@ This is a simple recreation of the classic game Pong implemented in Python. Pong
 - Player vs. AI mode: Challenge yourself against a computer-controlled opponent.<br>
 - Adjustable difficulty level for the AI<br>
 - Score tracking for both players.<br>
+
+## Contributing
+Contributions are welcome! If you have any ideas for improvements or new features, feel free to open an issue or submit a pull request.
