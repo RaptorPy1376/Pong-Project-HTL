@@ -74,3 +74,23 @@ def redraw_window(paddles, ball):
         paddle.draw()
     ball.draw()
     pygame.display.update()
+
+
+def main():
+    clock = pygame.time.Clock()
+    paddles = [Paddle(50, HEIGHT // 2 - PADDLE_HEIGHT // 2), Paddle(WIDTH - 50 - PADDLE_WIDTH, HEIGHT // 2 - PADDLE_HEIGHT // 2)]
+    ball = Ball(WIDTH // 2 - BALL_SIZE // 2, HEIGHT // 2 - BALL_SIZE // 2)
+ 
+    running = True
+    while running:
+        clock.tick(60)
+ 
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w] and paddles[0].rect.top > 0:
+            paddles[0].move_up()
+        if keys[pygame.K_s] and paddles[0].rect.bottom < HEIGHT:
+            paddles[0].move_down()
+        if keys[pygame.K_UP] and paddles[1].rect.top > 0:
+            paddles[1].move_up()
+        if keys[pygame.K_DOWN] and paddles[1].rect.bottom < HEIGHT:
+            paddles[1].move_down()
