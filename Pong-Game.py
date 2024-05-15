@@ -66,7 +66,7 @@ def check_paddle_collision(ball, paddles):
         if ball.rect.colliderect(paddle.rect):
             ball.change_direction_x()
  
- 
+
 # Function to redraw the window
 def redraw_window(paddles, ball):
     WIN.fill(BLACK)
@@ -85,6 +85,10 @@ def main():
     while running:
         clock.tick(60)
  
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+ 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w] and paddles[0].rect.top > 0:
             paddles[0].move_up()
@@ -94,3 +98,12 @@ def main():
             paddles[1].move_up()
         if keys[pygame.K_DOWN] and paddles[1].rect.bottom < HEIGHT:
             paddles[1].move_down()
+ 
+        ball.move()
+        check_paddle_collision(ball, paddles)
+        redraw_window(paddles, ball)
+ 
+    pygame.quit()
+ 
+if __name__ == "__main__":
+    main()
