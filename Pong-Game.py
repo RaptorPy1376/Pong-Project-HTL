@@ -37,3 +37,22 @@ class Paddle:
  
     def draw(self):
         pygame.draw.rect(WIN, WHITE, self.rect)
+
+class Ball:
+    def __init__(self, x, y):
+        self.rect = pygame.Rect(x, y, BALL_SIZE, BALL_SIZE)
+        self.direction_x = random.choice([-1, 1])
+        self.direction_y = random.choice([-1, 1])
+ 
+    def move(self):
+        self.rect.x += self.direction_x * BALL_INITIAL_SPEED_X
+        self.rect.y += self.direction_y * BALL_INITIAL_SPEED_Y
+ 
+    def draw(self):
+        pygame.draw.ellipse(WIN, WHITE, self.rect)
+ 
+    def change_direction_y(self):
+        self.direction_y *= -1
+ 
+    def change_direction_x(self):
+        self.direction_x *= -1
