@@ -11,7 +11,12 @@ infoObject = pygame.display.Info()
 WIN = pygame.display.set_mode((infoObject.current_w, infoObject.current_h), pygame.NOFRAME)
 WIDTH, HEIGHT = WIN.get_width(), WIN.get_height()
  
+ # Set window caption
 pygame.display.set_caption("PONG")
+
+# Set window icon
+icon_path = os.path.join("icon.png")  # Change this to the path of your icon image
+pygame.display.set_icon(pygame.image.load(icon_path))
 
 # Colors
 WHITE = (255, 255, 255)
