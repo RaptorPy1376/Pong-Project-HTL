@@ -24,6 +24,7 @@ PADDLE_SPEED = 5
 BALL_INITIAL_SPEED_X = 3
 BALL_INITIAL_SPEED_Y = 3
 
+
 # Define classes
 class Paddle:
     def __init__(self, x, y):
@@ -37,6 +38,7 @@ class Paddle:
  
     def draw(self):
         pygame.draw.rect(WIN, WHITE, self.rect)
+
 
 class Ball:
     def __init__(self, x, y):
@@ -56,3 +58,19 @@ class Ball:
  
     def change_direction_x(self):
         self.direction_x *= -1
+
+
+# Function to handle collisions with paddles
+def check_paddle_collision(ball, paddles):
+    for paddle in paddles:
+        if ball.rect.colliderect(paddle.rect):
+            ball.change_direction_x()
+ 
+ 
+# Function to redraw the window
+def redraw_window(paddles, ball):
+    WIN.fill(BLACK)
+    for paddle in paddles:
+        paddle.draw()
+    ball.draw()
+    pygame.display.update()
