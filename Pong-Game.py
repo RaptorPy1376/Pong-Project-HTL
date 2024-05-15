@@ -66,6 +66,10 @@ def check_paddle_collision(ball, paddles):
         if ball.rect.colliderect(paddle.rect):
             ball.change_direction_x()
  
+ # Function to handle collisions with screen edges
+def check_screen_collision(ball):
+    if ball.rect.top <= 0 or ball.rect.bottom >= HEIGHT:
+        ball.change_direction_y()
 
 # Function to redraw the window
 def redraw_window(paddles, ball):
@@ -101,6 +105,7 @@ def main():
  
         ball.move()
         check_paddle_collision(ball, paddles)
+        check_screen_collision(ball)
         redraw_window(paddles, ball)
  
     pygame.quit()
