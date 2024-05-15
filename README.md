@@ -12,3 +12,7 @@ This is a simple recreation of the classic game Pong implemented in Python. Pong
 
 ## Contributing
 Contributions are welcome! If you have any ideas for improvements or new features, feel free to open an issue or submit a pull request.
+
+## Acknowledgments
+- Inspiration for this project comes from the original Pong game developed by Atari, released in 1972.
+- The game icon was obtained from Flaticon.com
