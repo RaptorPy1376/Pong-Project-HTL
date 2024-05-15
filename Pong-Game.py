@@ -23,3 +23,17 @@ BALL_SIZE = 20
 PADDLE_SPEED = 5
 BALL_INITIAL_SPEED_X = 3
 BALL_INITIAL_SPEED_Y = 3
+
+# Define classes
+class Paddle:
+    def __init__(self, x, y):
+        self.rect = pygame.Rect(x, y, PADDLE_WIDTH, PADDLE_HEIGHT)
+ 
+    def move_up(self):
+        self.rect.y -= PADDLE_SPEED
+ 
+    def move_down(self):
+        self.rect.y += PADDLE_SPEED
+ 
+    def draw(self):
+        pygame.draw.rect(WIN, WHITE, self.rect)
