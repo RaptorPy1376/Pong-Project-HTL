@@ -89,7 +89,27 @@ def redraw_window(paddles, ball):
     ball.draw()
     pygame.display.update()
 
+def server_program():
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(("0.0.0.0", 5555))  # You can change the port number if needed
+    server_socket.listen(1)
+    conn, addr = server_socket.accept()
+    print("Connection from:", addr)
+ 
+    while True:
+        data = f"{ball.rect.x},{ball.rect.y},{ball.direction_x},{ball.direction_y}," \
+               f"{paddles[0].rect.y},{paddles[1].rect.y}"
+        conn.send(data.encode())
+        recv_data = conn.recv(1024).decode()
+        if not recv_data:
+            break
+        paddles[0].rect.y, paddles[1].rect.y = map(int, recv_data.split(","))
+ 
+    conn.close()
+
 def main():
+    global ball, paddles
+    
     clock = pygame.time.Clock()
     paddles = [Paddle(50, HEIGHT // 2 - PADDLE_HEIGHT // 2), Paddle(WIDTH - 50 - PADDLE_WIDTH, HEIGHT // 2 - PADDLE_HEIGHT // 2)]
     ball = Ball(WIDTH // 2 - BALL_SIZE // 2, HEIGHT // 2 - BALL_SIZE // 2)
