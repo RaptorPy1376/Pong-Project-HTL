@@ -93,7 +93,7 @@ def redraw_window(paddles, ball):
 
 def server_program():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(("0.0.0.0", 5555))  # You can change the port number if needed
+    server_socket.bind(("10.10.217.88", 5555))  # You can change the port number if needed
     server_socket.listen(1)
     conn, addr = server_socket.accept()
     print("Connection from:", addr)
@@ -126,7 +126,7 @@ def client_program(server_ip):
     client_socket.close()
 
 
-def main():
+def main(role, server_ip=None):
     global ball, paddles
 
     clock = pygame.time.Clock()
