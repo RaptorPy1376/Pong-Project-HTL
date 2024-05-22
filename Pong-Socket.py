@@ -116,6 +116,9 @@ def main():
     paddles = [Paddle(50, HEIGHT // 2 - PADDLE_HEIGHT // 2), Paddle(WIDTH - 50 - PADDLE_WIDTH, HEIGHT // 2 - PADDLE_HEIGHT // 2)]
     ball = Ball(WIDTH // 2 - BALL_SIZE // 2, HEIGHT // 2 - BALL_SIZE // 2)
 
+    if role == "server":
+        threading.Thread(target=server_program).start()
+
     running = True
     while running:
         clock.tick(60)
@@ -145,5 +148,8 @@ def main():
     pygame.quit()
 
 if __name__ == "__main__":
-    main()
-
+    role = input("Enter role (server/client): ").strip().lower()
+    server_ip = None
+    if role == "client":
+        server_ip = input("Enter server IP: ").strip()
+    main(role, server_ip)
