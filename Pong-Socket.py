@@ -1,6 +1,8 @@
 import pygame
 import random
 import os
+import socket
+import threading
 
 # Initialize Pygame
 pygame.init()
@@ -109,7 +111,7 @@ def server_program():
 
 def main():
     global ball, paddles
-    
+
     clock = pygame.time.Clock()
     paddles = [Paddle(50, HEIGHT // 2 - PADDLE_HEIGHT // 2), Paddle(WIDTH - 50 - PADDLE_WIDTH, HEIGHT // 2 - PADDLE_HEIGHT // 2)]
     ball = Ball(WIDTH // 2 - BALL_SIZE // 2, HEIGHT // 2 - BALL_SIZE // 2)
