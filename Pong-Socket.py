@@ -135,6 +135,8 @@ def main():
 
     if role == "server":
         threading.Thread(target=server_program).start()
+    elif role == "client":
+        threading.Thread(target=client_program, args=(server_ip,)).start()
 
     running = True
     while running:
