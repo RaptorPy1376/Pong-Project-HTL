@@ -109,6 +109,23 @@ def server_program():
  
     conn.close()
 
+def client_program(server_ip):
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect((server_ip, 5555))  # Use the server's IP address
+
+    while True:
+        data = client_socket.recv(1024).decode()
+        if not data:
+            break
+        ball.rect.x, ball.rect.y, ball.direction_x, ball.direction_y, \
+        paddles[0].rect.y, paddles[1].rect.y = map(int, data.split(","))
+
+        send_data = f"{paddles[0].rect.y},{paddles[1].rect.y}"
+        client_socket.send(send_data.encode())
+
+    client_socket.close()
+
+
 def main():
     global ball, paddles
 
