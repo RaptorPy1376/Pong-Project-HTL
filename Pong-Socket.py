@@ -3,6 +3,7 @@ import random
 import os
 import socket
 import threading
+import sys
 
 # Initialize Pygame
 pygame.init()
@@ -125,7 +126,6 @@ def client_program(server_ip):
 
     client_socket.close()
 
-
 def main(role, server_ip=None):
     global ball, paddles
 
@@ -145,6 +145,9 @@ def main(role, server_ip=None):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                pygame.quit()  # Beenden von Pygame
+                sys.exit()    # Beenden des Python-Skripts
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     ball.reset_position()
@@ -163,8 +166,6 @@ def main(role, server_ip=None):
         check_paddle_collision(ball, paddles)
         check_screen_collision(ball)
         redraw_window(paddles, ball)
-
-    pygame.quit()
 
 if __name__ == "__main__":
     role = input("Enter role (server/client): ").strip().lower()
