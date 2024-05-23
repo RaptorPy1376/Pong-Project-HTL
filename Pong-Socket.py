@@ -100,32 +100,29 @@ def server_program():
     print("Connection from:", addr)
  
     while True:
-        data = f"{ball.rect.x},{ball.rect.y},{ball.direction_x},{ball.direction_y}," \
-               f"{paddles[0].rect.y},{paddles[1].rect.y}"
+        data = f"{ball.rect.x},{ball.rect.y},{ball.direction_x},{ball.direction_y},{paddles[0].rect.y}"
         conn.send(data.encode())
         recv_data = conn.recv(1024).decode()
         if not recv_data:
             break
-        paddles[0].rect.y, paddles[1].rect.y = map(int, recv_data.split(","))
+        paddles[1].rect.y = int(recv_data)
  
     conn.close()
-
+ 
 def client_program(server_ip):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((server_ip, 5555))  # Use the server's IP address
-
+ 
     while True:
         data = client_socket.recv(1024).decode()
         if not data:
             break
-        ball.rect.x, ball.rect.y, ball.direction_x, ball.direction_y, \
-        paddles[0].rect.y, paddles[1].rect.y = map(int, data.split(","))
-
-        send_data = f"{paddles[0].rect.y},{paddles[1].rect.y}"
+        ball.rect.x, ball.rect.y, ball.direction_x, ball.direction_y, paddles[0].rect.y = map(int, data.split(","))
+        send_data = f"{paddles[1].rect.y}"
         client_socket.send(send_data.encode())
-
+ 
     client_socket.close()
-
+    
 def main(role, server_ip=None):
     global ball, paddles
 
