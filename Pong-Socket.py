@@ -11,8 +11,8 @@ pygame.init()
 # Get the display info
 infoObject = pygame.display.Info()
 
-# Set the window size to 800x600
-WIDTH, HEIGHT = 800, 600
+# Set the window size to 1600x900 (16:9 Aspect Ratio)
+WIDTH, HEIGHT = 1600, 900
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Set window caption
@@ -150,14 +150,17 @@ def main(role, server_ip=None):
                     ball.reset_position()
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w] and paddles[0].rect.top > 0:
-            paddles[0].move_up()
-        if keys[pygame.K_s] and paddles[0].rect.bottom < HEIGHT:
-            paddles[0].move_down()
-        if keys[pygame.K_UP] and paddles[1].rect.top > 0:
-            paddles[1].move_up()
-        if keys[pygame.K_DOWN] and paddles[1].rect.bottom < HEIGHT:
-            paddles[1].move_down()
+
+        if role == "server":
+            if keys[pygame.K_w] and paddles[0].rect.top > 0:
+                paddles[0].move_up()
+            if keys[pygame.K_s] and paddles[0].rect.bottom < HEIGHT:
+                paddles[0].move_down()
+        elif role == "client":
+            if keys[pygame.K_UP] and paddles[1].rect.top > 0:
+                paddles[1].move_up()
+            if keys[pygame.K_DOWN] and paddles[1].rect.bottom < HEIGHT:
+                paddles[1].move_down()
 
         ball.move()
         check_paddle_collision(ball, paddles)
