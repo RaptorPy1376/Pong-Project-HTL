@@ -92,6 +92,14 @@ def redraw_window(paddles, ball):
     ball.draw()
     pygame.display.update()
 
+# Function to draw scores
+def draw_scores(scores):
+    font = pygame.font.Font(None, 74)
+    text = font.render(str(scores[0]), 1, WHITE)
+    WIN.blit(text, (WIDTH // 4, 10))
+    text = font.render(str(scores[1]), 1, WHITE)
+    WIN.blit(text, (3 * WIDTH // 4, 10))
+
 def server_program():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind(("0.0.0.0", 5555))  # You can change the port number if needed
@@ -100,7 +108,7 @@ def server_program():
     print("Connection from:", addr)
  
     while True:
-        data = f"{ball.rect.x},{ball.rect.y},{ball.direction_x},{ball.direction_y},{paddles[0].rect.y}"
+        data = f"{ball.rect.x},{ball.rect.y},{ball.direction_x},{ball.direction_y},{paddles[0].rect.y},{scores[0]},{scores[1]}"
         conn.send(data.encode())
         recv_data = conn.recv(1024).decode()
         if not recv_data:
@@ -117,7 +125,7 @@ def client_program(server_ip):
         data = client_socket.recv(1024).decode()
         if not data:
             break
-        ball.rect.x, ball.rect.y, ball.direction_x, ball.direction_y, paddles[0].rect.y = map(int, data.split(","))
+        ball.rect.x, ball.rect.y, ball.direction_x, ball.direction_y, paddles[0].rect.y, scores[0], scores[1] = map(int, data.split(","))
         send_data = f"{paddles[1].rect.y}"
         client_socket.send(send_data.encode())
  
