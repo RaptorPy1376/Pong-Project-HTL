@@ -47,7 +47,6 @@ class Paddle:
     def draw(self):
         pygame.draw.rect(WIN, WHITE, self.rect)
 
-
 class Ball:
     def __init__(self, x, y):
         self.rect = pygame.Rect(x, y, BALL_SIZE, BALL_SIZE)
@@ -89,14 +88,17 @@ def check_screen_collision(ball, scores):
     if ball.rect.right >= WIDTH:
         scores[0] += 1
         ball.reset_position()
- 
+
 # Function to redraw the window
-def redraw_window(paddles, ball, scores):
+def redraw_window(paddles, ball, scores, show_controls):
     WIN.fill(BLACK)
     for paddle in paddles:
         paddle.draw()
     ball.draw()
     draw_scores(scores)
+    draw_instructions()
+    if show_controls:
+        draw_controls()
     pygame.display.update()
 
 # Function to draw scores
@@ -107,13 +109,35 @@ def draw_scores(scores):
     text = font.render(str(scores[1]), 1, WHITE)
     WIN.blit(text, (3 * WIDTH // 4, 10))
 
+# Function to draw controls
+def draw_controls():
+    font = pygame.font.Font(None, 36)
+    controls = [
+        "Player 1 (Server): W - Move Up, S - Move Down",
+        "Player 2 (Client): UP - Move Up, DOWN - Move Down",
+        "Press ENTER to reset ball position",
+        "Press SPACE to reset scores",
+        "Press H to show/hide controls"
+    ]
+    y_offset = 50  # Start below the instructions text
+    for control in controls:
+        text = font.render(control, 1, WHITE)
+        WIN.blit(text, (10, y_offset))
+        y_offset += 40
+
+# Function to draw instructions
+def draw_instructions():
+    font = pygame.font.Font(None, 36)
+    text = font.render("Press H for controls", 1, WHITE)
+    WIN.blit(text, (WIDTH // 2 - text.get_width() // 2, 10))
+
 def server_program():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind(("0.0.0.0", 5555))  # You can change the port number if needed
     server_socket.listen(1)
     conn, addr = server_socket.accept()
     print("Connection from:", addr)
- 
+
     while True:
         data = f"{ball.rect.x},{ball.rect.y},{ball.direction_x},{ball.direction_y},{paddles[0].rect.y},{scores[0]},{scores[1]}"
         conn.send(data.encode())
@@ -121,13 +145,13 @@ def server_program():
         if not recv_data:
             break
         paddles[1].rect.y = int(recv_data)
- 
+
     conn.close()
- 
+
 def client_program(server_ip):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((server_ip, 5555))  # Use the server's IP address
- 
+
     while True:
         data = client_socket.recv(1024).decode()
         if not data:
@@ -135,9 +159,9 @@ def client_program(server_ip):
         ball.rect.x, ball.rect.y, ball.direction_x, ball.direction_y, paddles[0].rect.y, scores[0], scores[1] = map(int, data.split(","))
         send_data = f"{paddles[1].rect.y}"
         client_socket.send(send_data.encode())
- 
+
     client_socket.close()
-    
+
 def main(role, server_ip=None):
     global ball, paddles, scores
 
@@ -146,6 +170,7 @@ def main(role, server_ip=None):
     ball = Ball(WIDTH // 2 - BALL_SIZE // 2, HEIGHT // 2 - BALL_SIZE // 2)
 
     scores = [0, 0]
+    show_controls = False  # Variable to track whether to show controls
 
     if role == "server":
         threading.Thread(target=server_program).start()
@@ -167,6 +192,8 @@ def main(role, server_ip=None):
                     ball.reset_position()
                 if event.key == pygame.K_SPACE:
                     scores = [0, 0]
+                if event.key == pygame.K_h:
+                    show_controls = not show_controls  # Toggle control display
 
         keys = pygame.key.get_pressed()
 
@@ -184,7 +211,7 @@ def main(role, server_ip=None):
         ball.move()
         check_paddle_collision(ball, paddles)
         check_screen_collision(ball, scores)
-        redraw_window(paddles, ball, scores)
+        redraw_window(paddles, ball, scores, show_controls)
 
 if __name__ == "__main__":
     role = input("Choose Role (server/client): ").strip().lower()
@@ -192,3 +219,4 @@ if __name__ == "__main__":
     if role == "client":
         server_ip = input("Enter Server IP: ").strip()
     main(role, server_ip)
+
