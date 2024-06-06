@@ -53,12 +53,10 @@ class Ball:
         self.rect = pygame.Rect(x, y, BALL_SIZE, BALL_SIZE)
         self.direction_x = random.choice([-1, 1])
         self.direction_y = random.choice([-1, 1])
-        self.speed_x = BALL_INITIAL_SPEED_X
-        self.speed_y = BALL_INITIAL_SPEED_Y
  
     def move(self):
-        self.rect.x += self.direction_x * self.speed_x
-        self.rect.y += self.direction_y * self.speed_y
+        self.rect.x += self.direction_x * BALL_INITIAL_SPEED_X
+        self.rect.y += self.direction_y * BALL_INITIAL_SPEED_Y
  
     def draw(self):
         pygame.draw.ellipse(WIN, WHITE, self.rect)
@@ -74,18 +72,15 @@ class Ball:
         self.rect.y = HEIGHT // 2 - BALL_SIZE // 2
         self.direction_x = random.choice([-1, 1])
         self.direction_y = random.choice([-1, 1])
-        self.speed_x = BALL_INITIAL_SPEED_X
-        self.speed_y = BALL_INITIAL_SPEED_Y
  
 # Function to handle collisions with paddles
 def check_paddle_collision(ball, paddles):
     for paddle in paddles:
         if ball.rect.colliderect(paddle.rect):
             ball.change_direction_x()
-            ball.speed_x += 0.5  # Increase ball speed after each paddle hit
  
-# Function to handle collisions with screen edges and scoring
-def check_screen_collision(ball, paddles, scores):
+# Function to handle collisions with screen edges
+def check_screen_collision(ball, scores):
     if ball.rect.top <= 0 or ball.rect.bottom >= HEIGHT:
         ball.change_direction_y()
     if ball.rect.left <= 0:
@@ -104,11 +99,13 @@ def redraw_window(paddles, ball, scores):
     draw_scores(scores)
     pygame.display.update()
  
-# Function to draw scores on the screen
+# Function to draw scores
 def draw_scores(scores):
-    font = pygame.font.SysFont(None, 75)
-    score_text = font.render(f"{scores[0]} - {scores[1]}", True, WHITE)
-    WIN.blit(score_text, (WIDTH // 2 - score_text.get_width() // 2, 20))
+    font = pygame.font.Font(None, 74)
+    text = font.render(str(scores[0]), 1, WHITE)
+    WIN.blit(text, (WIDTH // 4, 10))
+    text = font.render(str(scores[1]), 1, WHITE)
+    WIN.blit(text, (3 * WIDTH // 4, 10))
  
 def server_program():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -116,27 +113,17 @@ def server_program():
     server_socket.listen(1)
     conn, addr = server_socket.accept()
     print("Connection from:", addr)
- 
-    game_started = False
     while True:
-        if game_started:
-            data = f"{ball.rect.x},{ball.rect.y},{ball.direction_x},{ball.direction_y},{paddles[0].rect.y},{scores[0]},{scores[1]}"
-            conn.send(data.encode())
-            recv_data = conn.recv(1024).decode()
-            if not recv_data:
-                break
-            paddles[1].rect.y = int(recv_data)
- 
-        event = pygame.event.poll()
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            game_started = True
- 
+        data = f"{ball.rect.x},{ball.rect.y},{ball.direction_x},{ball.direction_y},{paddles[0].rect.y},{scores[0]},{scores[1]}"
+        conn.send(data.encode())
+        recv_data = conn.recv(1024).decode()
+        if not recv_data:
+            break
+        paddles[1].rect.y = int(recv_data)
     conn.close()
- 
 def client_program(server_ip):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((server_ip, 5555))  # Use the server's IP address
- 
     while True:
         data = client_socket.recv(1024).decode()
         if not data:
@@ -144,7 +131,6 @@ def client_program(server_ip):
         ball.rect.x, ball.rect.y, ball.direction_x, ball.direction_y, paddles[0].rect.y, scores[0], scores[1] = map(int, data.split(","))
         send_data = f"{paddles[1].rect.y}"
         client_socket.send(send_data.encode())
- 
     client_socket.close()
  
 def main(role, server_ip=None):
@@ -153,7 +139,7 @@ def main(role, server_ip=None):
     clock = pygame.time.Clock()
     paddles = [Paddle(50, HEIGHT // 2 - PADDLE_HEIGHT // 2), Paddle(WIDTH - 50 - PADDLE_WIDTH, HEIGHT // 2 - PADDLE_HEIGHT // 2)]
     ball = Ball(WIDTH // 2 - BALL_SIZE // 2, HEIGHT // 2 - BALL_SIZE // 2)
-    scores = [0, 0]  # Initialize scores for both players
+    scores = [0, 0]
  
     if role == "server":
         threading.Thread(target=server_program).start()
@@ -189,7 +175,7 @@ def main(role, server_ip=None):
  
         ball.move()
         check_paddle_collision(ball, paddles)
-        check_screen_collision(ball, paddles, scores)
+        check_screen_collision(ball, scores)
         redraw_window(paddles, ball, scores)
  
 if __name__ == "__main__":
