@@ -219,4 +219,3 @@ if __name__ == "__main__":
     if role == "client":
         server_ip = input("Enter Server IP: ").strip()
     main(role, server_ip)
-
