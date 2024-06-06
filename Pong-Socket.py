@@ -80,16 +80,23 @@ def check_paddle_collision(ball, paddles):
             ball.change_direction_x()
 
 # Function to handle collisions with screen edges
-def check_screen_collision(ball):
+def check_screen_collision(ball, scores):
     if ball.rect.top <= 0 or ball.rect.bottom >= HEIGHT:
         ball.change_direction_y()
-
+    if ball.rect.left <= 0:
+        scores[1] += 1
+        ball.reset_position()
+    if ball.rect.right >= WIDTH:
+        scores[0] += 1
+        ball.reset_position()
+ 
 # Function to redraw the window
-def redraw_window(paddles, ball):
+def redraw_window(paddles, ball, scores):
     WIN.fill(BLACK)
     for paddle in paddles:
         paddle.draw()
     ball.draw()
+    draw_scores(scores)
     pygame.display.update()
 
 # Function to draw scores
@@ -132,11 +139,13 @@ def client_program(server_ip):
     client_socket.close()
     
 def main(role, server_ip=None):
-    global ball, paddles
+    global ball, paddles, scores
 
     clock = pygame.time.Clock()
     paddles = [Paddle(50, HEIGHT // 2 - PADDLE_HEIGHT // 2), Paddle(WIDTH - 50 - PADDLE_WIDTH, HEIGHT // 2 - PADDLE_HEIGHT // 2)]
     ball = Ball(WIDTH // 2 - BALL_SIZE // 2, HEIGHT // 2 - BALL_SIZE // 2)
+
+    scores = [0, 0]
 
     if role == "Create Game":
         threading.Thread(target=server_program).start()
@@ -172,8 +181,8 @@ def main(role, server_ip=None):
 
         ball.move()
         check_paddle_collision(ball, paddles)
-        check_screen_collision(ball)
-        redraw_window(paddles, ball)
+        check_screen_collision(ball, scores)
+        redraw_window(paddles, ball, scores)
 
 if __name__ == "__main__":
     role = input("Choose (Create Game/Join Game): ").strip().lower()
