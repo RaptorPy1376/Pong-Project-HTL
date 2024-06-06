@@ -147,9 +147,9 @@ def main(role, server_ip=None):
 
     scores = [0, 0]
 
-    if role == "Create Game":
+    if role == "server":
         threading.Thread(target=server_program).start()
-    elif role == "Join Game":
+    elif role == "client":
         threading.Thread(target=client_program, args=(server_ip,)).start()
 
     running = True
@@ -185,8 +185,8 @@ def main(role, server_ip=None):
         redraw_window(paddles, ball, scores)
 
 if __name__ == "__main__":
-    role = input("Choose (Create Game/Join Game): ").strip().lower()
+    role = input("Choose Role (server/client): ").strip().lower()
     server_ip = None
     if role == "client":
-        server_ip = input("Enter Game-Host IP: ").strip()
+        server_ip = input("Enter Server IP: ").strip()
     main(role, server_ip)
