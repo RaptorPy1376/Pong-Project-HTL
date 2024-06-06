@@ -165,6 +165,8 @@ def main(role, server_ip=None):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     ball.reset_position()
+                if event.key == pygame.K_SPACE:
+                    scores = [0, 0]
 
         keys = pygame.key.get_pressed()
 
