@@ -23,6 +23,15 @@ pygame.display.set_caption("PONG")
 icon_path = os.path.join("icon.png")  # Change this to the path of your icon image
 pygame.display.set_icon(pygame.image.load(icon_path))
  
+# Load sounds
+wall_paddle_sound = pygame.mixer.Sound("paddle_wall_hit.mp3")
+score_sound = pygame.mixer.Sound("score.mp3")
+background_music = "background_music.mp3"
+ 
+# Load music
+pygame.mixer.music.load(background_music)
+pygame.mixer.music.play(-1)  # Play music in a loop
+ 
 # Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -109,16 +118,22 @@ def check_paddle_collision(ball, paddles):
             # Increment ball speed, but cap it at BALL_MAX_SPEED
             ball.speed = min(ball.speed + 0.5, BALL_MAX_SPEED)
  
+            # Play the wall/paddle collision sound
+            wall_paddle_sound.play()
+ 
 # Function to handle collisions with screen edges
 def check_screen_collision(ball, scores):
     if ball.rect.top <= 0 or ball.rect.bottom >= HEIGHT:
         ball.change_direction_y()
+        wall_paddle_sound.play()  # Play the wall/paddle collision sound
     if ball.rect.left <= 0:
         scores[1] += 1
         ball.reset_position()
+        score_sound.play()  # Play the score sound
     if ball.rect.right >= WIDTH:
         scores[0] += 1
         ball.reset_position()
+        score_sound.play()  # Play the score sound
  
 # Function to redraw the window
 def redraw_window(paddles, ball, scores, show_controls):
