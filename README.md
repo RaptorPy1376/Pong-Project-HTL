@@ -32,10 +32,10 @@ Before running the game, make sure you have Python installed on your system. You
    - Using a file explorer (e.g., Windows Explorer or Finder on macOS), navigate to the extracted folder `PONG-V1.0`.
 
 4. **Install dependencies:**
-   - Run the 'LIBRARY_INSTALLER.py' to install all necessary dependencies.
+   - Run the `LIBRARY_INSTALLER.py` to install all necessary dependencies.
 
 5. **Run the game:**
-   - Start the game by executing 'MENU.py' and chosing a game mode.
+   - Start the game by executing `MENU.py` and chosing a game mode.
 
 6. **Enjoy playing Pong!**
 
@@ -44,5 +44,5 @@ Contributions are welcome! If you have any ideas for improvements or new feature
 
 ## Acknowledgments
 - Inspiration for this project comes from the original Pong game developed by Atari, released in 1972.
-- The game icon was obtained from Flaticon.com
-- The game sounds were obtained from Pixabay.com
+- The game icon was obtained from [Flaticon.com](https://www.flaticon.com/)
+- The game sounds were obtained from [Pixabay.com](https://pixabay.com/de/music/)
