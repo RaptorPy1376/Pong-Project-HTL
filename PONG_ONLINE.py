@@ -76,9 +76,9 @@ def check_collision(ball, paddles, score):
             ball.speed = min(BALL_MAX_SPEED, ball.speed + 0.5)
             
             # Determine if paddle is moving towards or against ball's direction
-            if (paddle.rect.x < WIDTH / 2 and ball.direction_x > 0) or (paddle.rect.x > WIDTH / 2 and ball.direction_x < 0):
-                ball.speed = min(BALL_MAX_SPEED, ball.speed + 1)  # Increase ball speed
-            elif (paddle.rect.x < WIDTH / 2 and ball.direction_x < 0) or (paddle.rect.x > WIDTH / 2 and ball.direction_x > 0):
+            if (paddle.prev_y > paddle.rect.y and ball.direction_y < 0) or (paddle.prev_y < paddle.rect.y and ball.direction_y > 0):
+                ball.speed = min(BALL_MAX_SPEED, ball.speed + 0.5)  # Increase ball speed
+            elif (paddle.prev_y > paddle.rect.y and ball.direction_y > 0) or (paddle.prev_y < paddle.rect.y and ball.direction_y < 0):
                 ball.speed = max(BALL_INITIAL_SPEED, ball.speed - 1)  # Decrease ball speed
                 
             wall_paddle_sound.play()  # Play paddle hit sound
