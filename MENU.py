@@ -9,7 +9,7 @@ def offline_play(root):
 
 def online_play(root):
     print("Starting online play...")
-    subprocess.Popen(["python", "PONG_ONLINE_BrokenPhyiscs.py"])
+    subprocess.Popen(["python", "PONG_ONLINE.py"])
     root.destroy()
 
 def start_game(root, choice):
