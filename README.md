@@ -15,6 +15,30 @@ This is a simple recreation of the classic game Pong implemented in Python. Pong
 - Score tracking for both players.
 - Sound effects for paddle hits and ball bounces.
 
+## Tutorial: How to Run the Game
+
+### Prerequisites
+Before running the game, make sure you have Python installed on your system. You can download Python from [python.org](https://www.python.org).
+
+### Steps
+
+1. **Download the latest release (zip file):**
+   - Download the zip file of the latest release from [GitHub Releases](https://github.com/RaptorPy1376/Pong-Project-HTL/releases/latest).
+
+2. **Extract the zip file:**
+   - Extract the contents of the downloaded zip file to a folder of your choice.
+
+3. **Navigate to the project directory:**
+   - Using a file explorer (e.g., Windows Explorer or Finder on macOS), navigate to the extracted folder `PONG-V1.0`.
+
+4. **Install dependencies:**
+   - Run the 'LIBRARY_INSTALLER.py' to install all necessary dependencies.
+
+5. **Run the game:**
+   - Start the game by executing 'MENU.py' and chosing a game mode.
+
+6. **Enjoy playing Pong!**
+
 ## Contributing
 Contributions are welcome! If you have any ideas for improvements or new features, feel free to open an issue or submit a pull request.
 
