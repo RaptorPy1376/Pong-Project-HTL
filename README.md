@@ -35,7 +35,7 @@ Before running the game, make sure you have Python installed on your system. You
    - Run the `LIBRARY_INSTALLER.py` to install all necessary dependencies.
 
 5. **Run the game:**
-   - Start the game by executing `MENU.py` and chosing a game mode.
+   - Start the game by executing `MAIN.py` and chosing a game mode.
 
 6. **Enjoy playing Pong!**
 
